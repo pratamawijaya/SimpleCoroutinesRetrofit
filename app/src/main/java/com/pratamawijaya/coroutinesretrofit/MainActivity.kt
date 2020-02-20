@@ -1,5 +1,6 @@
 package com.pratamawijaya.coroutinesretrofit
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.pratamawijaya.coroutinesretrofit.data.model.Todo
 import com.pratamawijaya.coroutinesretrofit.data.repository.TodoRepository
+import com.pratamawijaya.coroutinesretrofit.data.viewmodel.DemoWithViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
@@ -21,15 +23,20 @@ class MainActivity : AppCompatActivity() {
 
         btnReq.setOnClickListener {
             lifecycleScope.launch {
-                val result = withContext(Dispatchers.IO) { repository.getTodo(10) }
+                val rnd = (1..66).random()
+                val result = withContext(Dispatchers.IO) { repository.getTodo(rnd) }
                 showResult(result)
             }
+        }
+
+        btnViewmodel.setOnClickListener {
+            startActivity(Intent(this, DemoWithViewModel::class.java))
         }
     }
 
     private fun showResult(result: Todo) {
-        Log.d("debug","tag result ${result.toString()}")
-        Toast.makeText(this, "result ${result.title}", Toast.LENGTH_SHORT).show()
+        Log.d("debug", "tag result $result")
+        Toast.makeText(this, "result $result", Toast.LENGTH_SHORT).show()
     }
 
 }
