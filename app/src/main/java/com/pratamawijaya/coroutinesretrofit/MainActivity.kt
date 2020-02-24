@@ -41,7 +41,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             startActivity(Intent(this, DemoWithViewModel::class.java))
         }
 
+    }
 
+    /**
+     * for testing purpose
+     */
+    private fun testRunCoroutines() {
         // test launch 3 coroutines
 
         launch {
@@ -80,25 +85,25 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         Toast.makeText(this, "result $result", Toast.LENGTH_SHORT).show()
     }
 
-    suspend fun postItem(item: Item) {
+    private suspend fun postItem(item: Item) {
         val token = requestToken()
         val post = createPost(token, item)
         processPost(post)
     }
 
-    suspend fun requestToken(): Token {
+    private suspend fun requestToken(): Token {
         val rnds = (0..50).random()
         delay(500L)
         return Token("mytoken_$rnds")
     }
 
-    suspend fun createPost(token: Token, item: Item): Post {
+    private suspend fun createPost(token: Token, item: Item): Post {
         val rnds = (10..5000).random()
         delay(500L)
         return Post("token : ${token.token} item ${item.data} $rnds")
     }
 
-    fun processPost(post: Post) {
+    private fun processPost(post: Post) {
         Log.d("tag", "debug post ${post.title}")
     }
 }
