@@ -11,7 +11,7 @@ interface Webservices {
     suspend fun getTodo(@Path("id") id: Int): Todo
 }
 
-val webservices: Webservices by lazy {
+val myApi: Webservices by lazy {
     Retrofit.Builder()
         .baseUrl("https://jsonplaceholder.typicode.com/")
         .addConverterFactory(GsonConverterFactory.create())
