@@ -14,18 +14,11 @@ import kotlinx.coroutines.*
 import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity(), CoroutineScope {
-
-    lateinit var job: Job
-
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.IO
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        job = Job()
 
         val repository = TodoRepository()
 
@@ -49,7 +42,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private fun testRunCoroutines() {
         // test launch 3 coroutines
 
-        launch {
+        lifecycleScope.launch {
             for (i in 1..100) {
                 println("I'm working in thread ${Thread.currentThread().name}")
                 postItem(Item("data $i"))
@@ -59,14 +52,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         val threads = 4
         val myCustomDispatcher = Executors.newFixedThreadPool(threads).asCoroutineDispatcher()
 
-        launch(myCustomDispatcher) {
+        lifecycleScope.launch(myCustomDispatcher) {
             for (i in 1..100) {
                 println("I'm working in thread ${Thread.currentThread().name}")
                 postItem(Item("data $i"))
             }
         }
 
-        launch(myCustomDispatcher) {
+        lifecycleScope.launch(myCustomDispatcher) {
             for (i in 1..100) {
                 println("I'm working in thread ${Thread.currentThread().name}")
                 postItem(Item("data $i"))
@@ -76,8 +69,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onDestroy() {
         super.onDestroy()
-        job.cancel()
-        Log.d("debug", "destroy job ${job.isCancelled}")
+//        job.cancel()
+//        Log.d("debug", "destroy job ${job.isCancelled}")
     }
 
     private fun showResult(result: Todo) {
