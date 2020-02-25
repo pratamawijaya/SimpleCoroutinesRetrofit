@@ -23,12 +23,22 @@ class DemoWithViewModel : AppCompatActivity() {
             showResult(todo)
         })
 
+        vm._error.observe(this, Observer { error ->
+            if (error.isNotEmpty()) {
+                showError(error)
+            }
+        })
+
         btnReq.setOnClickListener {
             val rnd = (1..66).random()
             vm.getTodo(rnd)
         }
 
         btnViewmodel.visibility = GONE
+    }
+
+    private fun showError(error: String?) {
+        Toast.makeText(this, "Error $error", Toast.LENGTH_SHORT).show()
     }
 
     private fun showResult(result: Todo) {
