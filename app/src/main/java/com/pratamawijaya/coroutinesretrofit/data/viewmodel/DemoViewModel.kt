@@ -32,7 +32,7 @@ class DemoViewModel : ViewModel() {
                         is HttpException -> {
                             val code = throwable.code()
                             val errorResponse = throwable.message()
-                            _error.postValue("Error $errorResponse")
+                            _error.postValue("Error $code $errorResponse")
                         }
                         else -> {
                             _error.postValue("Unknown Error")
